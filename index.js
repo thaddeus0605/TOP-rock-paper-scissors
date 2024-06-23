@@ -1,54 +1,30 @@
-let humanScore = 0; 
-let computerScore = 0;
-
-function getComputerChoice() {
-    const gameStrings = ['rock', 'paper', 'scissors'];
-    return gameStrings[Math.floor(Math.random() * gameStrings.length)]
-};
-
-function getHumanChoice() {
-    const humanChoice = prompt("Please choose rock paper or scissors");
-    return humanChoice.toLowerCase();
-};
-
-function playRound(humanChoice, computerChoice) {
-
-    if ((humanChoice === "rock" && computerChoice === "scissors") || (humanChoice === "paper" && computerChoice === "rock") || (humanChoice === "scissors" && computerChoice === "paper")){
-        humanScore++;
-        return `You won! ${humanChoice} beats ${computerChoice}`;
-    } else if ((computerChoice === "rock" && humanChoice === "scissors") || (computerChoice === "paper" && humanChoice === "rock") || (computerChoice === "scissors" && humanChoice === "paper")){
-        computerScore++;
-        return `You lose! ${computerChoice} beats ${humanChoice}`;
-    } else {
-        return `Tied! both chose ${humanChoice}`;
-    }
+const getComputerChoice = () => {
+    const choices = ["rock", "paper", "scissors"];
+    return choices[Math.floor(Math.random() * choices.length)];
 }
 
+const getHumanChoice = () => {
+    let userPrompt = prompt("Please select rock, paper, or scissors").toLocaleLowerCase();
+    while (userPrompt != "rock" && userPrompt != "paper" && userPrompt != "scissors") {
+        alert("Please try agin");
+        userPrompt = prompt("Please select rock, paper, or scissors").toLowerCase();
+    } 
+    return userPrompt;
+}
 
-const humanSelection = getHumanChoice();
+const humanScore = 0; 
+const computerScore = 0; 
+
+const playRound = (humanChoice, computerChoice) => {
+    return humanChoice + computerChoice;
+}
+
+const humanSelection = getHumanChoice(); 
 const computerSelection = getComputerChoice();
 
-function playGame()  {
-    function playRound(humanChoice, computerChoice) {
-        if ((humanChoice === "rock" && computerChoice === "scissors") || (humanChoice === "paper" && computerChoice === "rock") || (humanChoice === "scissors" && computerChoice === "paper")){
-            humanScore++;
-            return `You won! ${humanChoice} beats ${computerChoice}. The score is Human: ${humanScore} Computer: ${computerScore}`;
-        } else if ((computerChoice === "rock" && humanChoice === "scissors") || (computerChoice === "paper" && humanChoice === "rock") || (computerChoice === "scissors" && humanChoice === "paper")){
-            computerScore++;
-            return `You lose! ${computerChoice} beats ${humanChoice}. The score is Human: ${humanScore} Computer: ${computerScore}`;
-        } else {
-            return `Tied! both chose ${humanChoice}. The score is Human: ${humanScore} Computer: ${computerScore}`;
-        }
-    }
-    
+const testResult = playRound(humanSelection, computerSelection);
 
-    for (let i = 0; i <= 4; i++) {
-        const humanSelection = getHumanChoice();
-        const computerSelection = getComputerChoice();
 
-        console.log(playRound(humanSelection, computerSelection));
-    }
-    
-}
 
-console.log(playGame());
+
+console.log(testResult);
