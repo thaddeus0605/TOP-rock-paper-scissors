@@ -1,37 +1,25 @@
 let humanChoice = "";
-
-
-const getComputerChoice = () => {
-    const choices = ["rock", "paper", "scissors"];
-    return choices[Math.floor(Math.random() * choices.length)];
-}
-
-// const getHumanChoice = () => {
-//     let userPrompt = prompt("Please select rock, paper, or scissors").toLocaleLowerCase();
-//     while (userPrompt != "rock" && userPrompt != "paper" && userPrompt != "scissors") {
-//         alert("Please try agin");
-//         userPrompt = prompt("Please select rock, paper, or scissors").toLowerCase();
-//     } 
-//     return userPrompt;
-// }
-
 let humanScore = 0; 
 let computerScore = 0; 
-let rounds = 0;
-const scissorsButton = document.querySelector(".scissors");
-const scissorsButtonText = scissorsButton.innerHTML;
-const paperButton = document.querySelector(".paper");
-const paperButtonText = paperButton.innerHTML;
-const rockButton = document.querySelector(".rock");
-const rockButtonText = rockButton.innerHTML;
-const finalGame = document.querySelector(".final");
 
+const choices = ["rock", "paper", "scissors"];
 
+const getComputerChoice = () => choices[Math.floor(Math.random() * choices.length)];
 
+const updateScoreDisplay = () => {
+    document.querySelector('#human').innerHTML = humanScore;
+    document.querySelector('#computer').innerHTML = computerScore;
+};
+
+const endGame = () => {
+    document.querySelectorAll(".choice-button").forEach(button => button.disabled = true);
+    const finalMessage = humanScore > computerScore ? "Congratulations! You won the game!"
+                        : humanScore < computerScore ? "Sorry, you lost the game."
+                        : "This game is a tie!";
+    document.querySelector(".final").innerHTML = finalMessage;
+};
 
 const playRound = (humanChoice, computerChoice) => {
-    const humanScoreText = document.querySelector('#human');
-    const computerScoreText = document.querySelector('#computer');
     if (humanChoice === computerChoice) {
         return "It's a tie!";
     } else if (
@@ -40,54 +28,29 @@ const playRound = (humanChoice, computerChoice) => {
         (humanChoice === 'scissors' && computerChoice === 'paper')
     ) {
         humanScore++;
-        humanScoreText.innerHTML = humanScore;
         return `You win! ${humanChoice.charAt(0).toUpperCase() + humanChoice.slice(1)} beats ${computerChoice}`;
     } else {
         computerScore++;
-        computerScoreText.innerHTML = computerScore;
         return `You lose. ${computerChoice.charAt(0).toUpperCase() + computerChoice.slice(1)} beats ${humanChoice}`;
     }
-}  
+};
 
 const playGame = (humanSelection) => {
-   
-        const computerSelection = getComputerChoice();
-        let result = playRound(humanSelection, computerSelection);
-        
-        console.log(result);
-        const gameMessageText = document.querySelector('.message');
-        gameMessageText.innerHTML = `${result}. Score: Human: ${humanScore}, Computer: ${computerScore}`;
+    const computerSelection = getComputerChoice();
+    const result = playRound(humanSelection, computerSelection);
+    console.log(result);
+    
+    document.querySelector('.message').innerHTML = `${result}. Score: Human: ${humanScore}, Computer: ${computerScore}`;
+    updateScoreDisplay();
 
-        if (humanScore == 5 || computerScore == 5) {
-            paperButton.disabled = true;
-            rockButton.disabled = true;
-            scissorsButton.disabled = true;
-            if (humanScore > computerScore) {
-                finalGame.innerHTML = "Congratulations! You won the game!"
-            } else if (humanScore < computerScore) {
-                finalGame.innerHTML = "Sorry, you lost the game."
-            } else {
-                finalGame.innerHTML = "this game is a tie!"
-            }
-        }
-}
+    if (humanScore === 5 || computerScore === 5) {
+        endGame();
+    }
+};
 
-
-rockButton.addEventListener("click", () => {
-    humanChoice = rockButtonText.toLocaleLowerCase();
-    playGame(humanChoice);
+document.querySelectorAll(".choice-button").forEach(button => {
+    button.addEventListener("click", () => {
+        humanChoice = button.innerHTML.toLocaleLowerCase();
+        playGame(humanChoice);
+    });
 });
-
-
-paperButton.addEventListener("click", () => {
-    humanChoice = paperButtonText.toLocaleLowerCase();
-    playGame(humanChoice);
-});
-
-
-
-scissorsButton.addEventListener("click", () => {
-    humanChoice = scissorsButtonText.toLocaleLowerCase();
-    playGame(humanChoice);
-})
-
